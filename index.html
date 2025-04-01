@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Club Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title-animation">Club Registration</h1>
+      <form id="registration-form" novalidate>
+        <div class="form-row">
+          <div class="form-field">
+            <input type="text" id="first-name" required placeholder="Bhupendra" />
+            <label for="first-name">First Name</label>
+            <div class="error-message"></div>
+          </div>
+          <div class="form-field">
+            <input type="text" id="last-name" required placeholder="Jogi" />
+            <label for="last-name">Last Name</label>
+            <div class="error-message"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field date-field">
+            <label class="date-field-label">Date of Birth</label>
+            <input type="date" id="dob" name="dob" max="2100-12-31" required placeholder="14-04-1890" />
+            <div class="error-message"></div>
+          </div>
+          <div class="form-field gender-group">
+            <label class="radio-group-label required">Gender</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="gender" value="male" required tabindex="0" />
+                <span class="radio-label">Male</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="gender" value="female" required />
+                <span class="radio-label">Female</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="gender" value="other" required />
+                <span class="radio-label">Other</span>
+              </label>
+            </div>
+            <div class="error-message" id="gender-error"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <input type="text" id="username" name="username" required placeholder=" " />
+            <label for="username">VTOP Username</label>
+            <div class="error-message"></div>
+          </div>
+          <div class="form-field">
+            <input type="text" id="reg-number" name="reg-number" required placeholder="24BDS0155" />
+            <label for="reg-number">Registration Number</label>
+            <div class="error-message"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field email-field">
+            <input type="email" id="email" name="email" required placeholder=" " />
+            <label for="email">Email</label>
+            <div class="error-message"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field password-field">
+            <input type="password" id="password" name="password" required placeholder=" " />
+            <label for="password">Password</label>
+            <div class="password-toggle">
+              <span class="material-symbols-outlined visibility-icon">visibility</span>
+            </div>
+            <div class="error-message"></div>
+            <div class="password-strength-container">
+              <div class="strength-text">
+                Strength:
+                <b id="strength-level">None</b>
+              </div>
+              <div class="password-requirements">
+                <div class="requirement" id="req-uppercase">Uppercase letter</div>
+                <div class="requirement" id="req-lowercase">Lowercase letter</div>
+                <div class="requirement" id="req-number">Number</div>
+                <div class="requirement" id="req-special">Special character</div>
+                <div class="requirement" id="req-length">8+ characters</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field checkbox-field">
+            <label class="checkbox-container">
+              <input type="checkbox" id="terms" name="terms" required />
+              <span class="checkmark"></span>
+              <span class="checkbox-label">I accept the Terms and Conditions</span>
+            </label>
+            <div class="error-message"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <button type="submit" class="submit-btn">Register</button>
+        </div>
+      </form>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
