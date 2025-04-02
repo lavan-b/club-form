@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const passwordToggle = document.getElementsByClassName("password-toggle")[0];
   let passwordIsValid = false;
+  let isFormDirty = false;
 
   Object.values(fields).forEach((field) => {
     if (field && field.tagName) field.required = true;
@@ -30,6 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         navigateToNextField(fields[fieldName]);
       }
+    });
+    fields[fieldName].addEventListener("input", () => {
+      isFormDirty = true;
     });
 
     if (fieldName === "firstName" || fieldName === "lastName") {
@@ -60,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const label = genderGroup.getElementsByClassName("radio-group-label")[0];
           if (label) label.style.color = "var(--md-primary)";
         }
+        isFormDirty = true;
       });
 
       radio.addEventListener("keydown", (e) => {
@@ -74,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (fields.terms) {
     fields.terms.addEventListener("change", function () {
       if (this.checked) clearError(this.closest(".form-field"));
+      isFormDirty = true;
     });
 
     fields.terms.addEventListener("keydown", (e) => {
@@ -112,6 +118,15 @@ document.addEventListener("DOMContentLoaded", function () {
       };
       console.log(JSON.stringify(formData, null, 2));
       alert("Form submitted successfully!");
+      isFormDirty = false;
+    }
+  });
+
+  window.addEventListener("beforeunload", function (e) {
+    if (isFormDirty) {
+      const confirmationMessage = "Changes you made may not be saved.";
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
     }
   });
 
@@ -275,48 +290,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let isValid = true;
     let firstErrorField = null;
-
     const fieldsToCheck = [fields.firstName, fields.lastName, fields.dob, fields.username, fields.regNumber, fields.email, fields.password];
 
     for (const field of fieldsToCheck) {
       if (!field) continue;
       field.classList.add("touched");
       if (!validateField.call(field)) {
-        firstErrorField = field;
+        if (!firstErrorField) firstErrorField = field;
         isValid = false;
-        break;
       }
     }
 
-    if (isValid) {
-      const genderSelected = Array.from(fields.gender).some((radio) => radio.checked);
-      if (!genderSelected) {
-        const genderGroup = document.getElementById("gender-group") || document.getElementsByClassName("gender-group")[0];
-        if (genderGroup) {
-          const errorElement = genderGroup.getElementsByClassName("error-message")[0];
-          if (errorElement) {
-            errorElement.textContent = "Please select your gender";
-            errorElement.classList.add("visible");
-          }
-          firstErrorField = fields.gender[0];
-          isValid = false;
+    const genderSelected = Array.from(fields.gender).some((radio) => radio.checked);
+    if (!genderSelected) {
+      const genderGroup = document.getElementById("gender-group") || document.getElementsByClassName("gender-group")[0];
+      if (genderGroup) {
+        const errorElement = genderGroup.getElementsByClassName("error-message")[0];
+        if (errorElement) {
+          errorElement.textContent = "Please select your gender";
+          errorElement.classList.add("visible");
         }
+        if (!firstErrorField) firstErrorField = fields.gender[0];
+        isValid = false;
       }
     }
 
-    if (isValid && fields.terms && !fields.terms.checked) {
+    if (fields.terms && !fields.terms.checked) {
       const termsContainer = fields.terms.closest(".form-field");
       const errorElement = termsContainer?.getElementsByClassName("error-message")[0];
       if (errorElement) {
         errorElement.textContent = "You must accept the terms and conditions";
         errorElement.classList.add("visible");
       }
-      firstErrorField = fields.terms;
+      if (!firstErrorField) firstErrorField = fields.terms;
       isValid = false;
     }
-
     if (firstErrorField) firstErrorField.focus();
-
     return isValid;
   }
 });
